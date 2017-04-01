@@ -134,6 +134,34 @@ Public Class Matrix
         End Set
     End Property
 
+    ''' <summary>
+    ''' Return slice of the matrix.
+    ''' </summary>
+    ''' <param name="i">Row index of first element</param>
+    ''' <param name="j">Column index of first element</param>
+    ''' <param name="rows">Number of rows in slice</param>
+    ''' <param name="columns">Number of columns in slice</param>
+    Public Property Slice(i As Integer, j As Integer, rows As Integer, columns As Integer) As Matrix
+        Get
+            Dim M As New Matrix(rows, columns)
+            If i < 0 OrElse j < 0 Then Return M
+            For l As Integer = i To Min(i + rows - 1, Me.RowCount - 1)
+                For k As Integer = j To Min(j + columns - 1, Me.ColumnCount)
+                    M(l - i, k - j) = val(l, k)
+                Next
+            Next
+            Return M
+        End Get
+        Set(value As Matrix)
+            If i < 0 OrElse j < 0 Then Return
+            For l As Integer = i To Min(i + rows - 1, Me.RowCount - 1)
+                For k As Integer = j To Min(j + columns - 1, Me.ColumnCount)
+                    val(l, k) = value(l - i, k - j)
+                Next
+            Next
+        End Set
+    End Property
+
     Public Function Transpose() As Matrix
         Dim m As Matrix = New Matrix(Me.ColumnCount, Me.RowCount)
         For i As Integer = val.GetLowerBound(0) To val.GetUpperBound(0)
@@ -142,6 +170,24 @@ Public Class Matrix
             Next
         Next
         Return m
+    End Function
+
+    ''' <summary>
+    ''' Takes upper triangular submatrix and creates symmetrical matrix
+    ''' </summary>
+    Public Function Symmetry() As Matrix
+
+        If Me.RowCount <> Me.ColumnCount Then
+            Throw New Exception("Matrix must be square")
+        End If
+
+        Dim M As Matrix = Me.Clone
+        For i As Integer = 0 To Me.RowCount - 1
+            For j As Integer = i + 1 To Me.ColumnCount - 1
+                M(j, i) = M(i, j)
+            Next
+        Next
+        Return M
     End Function
 
     Public Function Add(m As Matrix) As Matrix
