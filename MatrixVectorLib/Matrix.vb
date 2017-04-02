@@ -162,6 +162,17 @@ Public Class Matrix
         End Set
     End Property
 
+    Public ReadOnly Property MaxNorm As Double
+        Get
+            MaxNorm = 0
+            For i As Integer = val.GetLowerBound(0) To val.GetUpperBound(0)
+                For j As Integer = val.GetLowerBound(1) To val.GetUpperBound(1)
+                    If Abs(val(i, j)) > MaxNorm Then MaxNorm = Abs(val(i, j))
+                Next
+            Next
+        End Get
+    End Property
+
     Public Function Transpose() As Matrix
         Dim m As Matrix = New Matrix(Me.ColumnCount, Me.RowCount)
         For i As Integer = val.GetLowerBound(0) To val.GetUpperBound(0)
