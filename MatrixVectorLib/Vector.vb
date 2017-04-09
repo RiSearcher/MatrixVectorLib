@@ -38,6 +38,27 @@ Public Class Vector
         End Set
     End Property
 
+    ''' <summary>
+    ''' Return slice of the vector.
+    ''' </summary>
+    ''' <param name="n">Index of the first element</param>
+    ''' <param name="len">Length f the slice</param>
+    Public Property Slice(n As Integer, len As Integer) As Vector
+        Get
+            Dim v As New Vector(len)
+            If n < 0 OrElse n > Me.Size Then Return v
+            For i As Integer = n To Min(Me.Size - 1, n + len - 1)
+                v(i - n) = val(i)
+            Next
+            Return v
+        End Get
+        Set(value As Vector)
+            If n < 0 OrElse n > Me.Size Then Return
+            For i As Integer = n To Min(Me.Size - 1, n + len - 1)
+                val(i) = value(i - n)
+            Next
+        End Set
+    End Property
 
     Public ReadOnly Property Size As Integer
         Get
