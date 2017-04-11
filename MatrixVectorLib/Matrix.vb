@@ -19,6 +19,12 @@ Public Class Matrix
     Public Sub New(n As Integer, m As Integer)
         ReDim val(n - 1, m - 1)
     End Sub
+
+    Public Sub New(array(,) As Double)
+        ReDim val(array.GetUpperBound(0), array.GetUpperBound(1))
+        val = array
+    End Sub
+
     Public Sub New(n As Integer, m As Integer, s As String)
         Dim tArr() As String
         tArr = Regex.Split(s, "\s*[, ]\s*")
